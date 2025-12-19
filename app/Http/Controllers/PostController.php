@@ -24,7 +24,7 @@ class PostController extends Controller
             ->withCount('comments')
             ->latest();
 
-        $posts = $query->simplePaginate(5);
+        $posts = $query->paginate(10)->withQueryString();
         return view('post.index', [
             'posts' => $posts,
         ]);
@@ -228,7 +228,7 @@ class PostController extends Controller
             ->withCount('comments')
             ->latest();
 
-        $posts = $query->simplePaginate(5);
+        $posts = $query->paginate(10)->withQueryString();
 
         return view('post.index', [
             'posts' => $posts,
@@ -255,7 +255,7 @@ class PostController extends Controller
                 ]);
             }
             return view('post.search', [
-                'posts' => collect([])->paginate(5),
+                'posts' => Post::query()->whereRaw('1 = 0')->paginate(10)->withQueryString(),
                 'query' => $query,
             ]);
         }
@@ -269,7 +269,8 @@ class PostController extends Controller
             ->withCount('claps')
             ->withCount('comments')
             ->latest()
-            ->simplePaginate(5);
+            ->paginate(10)
+            ->withQueryString();
 
         if ($request->expectsJson() || $request->ajax()) {
             return response()->json([
@@ -285,13 +286,14 @@ class PostController extends Controller
 
     public function myPosts()
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $posts = $user->posts()
             ->with(['user', 'media'])
             ->withCount('claps')
             ->withCount('comments')
             ->latest()
-            ->simplePaginate(5);
+            ->paginate(10)
+            ->withQueryString();
 
         return view('post.index', [
             'posts' => $posts,
