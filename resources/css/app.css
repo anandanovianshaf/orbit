@@ -6,10 +6,6 @@
 @tailwind utilities;
 
 @layer base {
-    :root {
-        color-scheme: dark;
-    }
-
     html {
         scroll-behavior: smooth;
     }
@@ -28,6 +24,7 @@
         background: rgba(34, 211, 238, 0.25);
         color: #e2e8f0;
     }
+
 }
 
 @layer utilities {
@@ -129,6 +126,45 @@
         .glow-hover:hover {
             transition-duration: 1ms;
             box-shadow: none;
+        }
+    }
+
+    /* Email verification marquee banner */
+    .marquee {
+        position: relative;
+        overflow: hidden;
+        /* mask edges so duplicate seam isn't obvious */
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+    }
+    .marquee__inner {
+        display: inline-flex;
+        width: max-content;
+        animation: marquee-left 18s linear infinite;
+        will-change: transform;
+    }
+    .marquee__group {
+        display: inline-flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        white-space: nowrap;
+        /* keep the text block visually centered in the banner */
+        justify-content: center;
+        min-width: 100vw;
+    }
+    @keyframes marquee-left {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-50%);
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .marquee__inner {
+            animation: none;
         }
     }
 }

@@ -17,13 +17,15 @@ it('increments views once per session when viewing a post', function () {
     ]);
 
     // First view increments
-    $this->get(route('post.show', ['username' => $user->username, 'post' => $post]))
+    $this->actingAs($user)
+        ->get(route('post.show', ['username' => $user->username, 'post' => $post]))
         ->assertOk();
 
     expect($post->fresh()->views)->toBe(1);
 
     // Second view in same session does not increment
-    $this->get(route('post.show', ['username' => $user->username, 'post' => $post]))
+    $this->actingAs($user)
+        ->get(route('post.show', ['username' => $user->username, 'post' => $post]))
         ->assertOk();
 
     expect($post->fresh()->views)->toBe(1);

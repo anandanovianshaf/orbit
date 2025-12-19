@@ -47,7 +47,8 @@ test('user can view published post', function () {
         'published_at' => now()->subDay(),
     ]);
 
-    $response = $this->get(route('post.show', ['username' => $this->user->username, 'post' => $post]));
+    $response = $this->actingAs($this->user)
+        ->get(route('post.show', ['username' => $this->user->username, 'post' => $post]));
 
     $response->assertOk();
     $response->assertSee($post->title);

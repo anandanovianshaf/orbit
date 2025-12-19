@@ -63,6 +63,9 @@
 
                 // Fade out on internal links
                 document.addEventListener('click', (e) => {
+                    // Never interfere with form interactions (logout, search, etc.)
+                    if (e.target && e.target.closest && e.target.closest('form')) return;
+
                     const a = e.target && e.target.closest ? e.target.closest('a') : null;
                     if (!a) return;
 

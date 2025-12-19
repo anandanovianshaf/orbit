@@ -8,9 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/login');
 
 Route::get('/test-image', function () {
     $post = \App\Models\Post::with('media')->first();
@@ -44,20 +42,28 @@ Route::get('/test-image', function () {
     ];
 });
 
-Route::get('/@{user:username}', [PublicProfileController::class, 'show'])
-    ->name('profile.show');
+Route::middleware('auth')->group(function () {
+    Route::get('/@{user:username}', [PublicProfileController::class, 'show'])
+        ->name('profile.show');
+});
 
-Route::get('/', [PostController::class, 'index'])
-    ->name('dashboard');
+// Listing pages should be visible to logged-in users, even if not verified.
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [PostController::class, 'index'])
+        ->name('dashboard');
 
-Route::get('/@{username}/{post:slug}', [PostController::class, 'show'])
-    ->name('post.show');
+    Route::get('/category/{category}', [PostController::class, 'category'])
+        ->name('post.byCategory');
 
-Route::get('/category/{category}', [PostController::class, 'category'])
-    ->name('post.byCategory');
+    Route::get('/search', [PostController::class, 'search'])
+        ->name('post.search');
+});
 
-Route::get('/search', [PostController::class, 'search'])
-    ->name('post.search');
+// Detail page should require verified email
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/@{username}/{post:slug}', [PostController::class, 'show'])
+        ->name('post.show');
+});
 
 Route::view('/offline', 'offline')->name('offline');
 

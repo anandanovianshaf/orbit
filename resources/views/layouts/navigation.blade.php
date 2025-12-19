@@ -159,11 +159,9 @@
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
 
-                                    <x-dropdown-link :href="route('logout')"
-                                            onclick="event.preventDefault();
-                                                        this.closest('form').submit();">
+                                    <button type="submit" class="block w-full px-4 py-2 text-start text-sm leading-5 text-slate-200 hover:bg-[#23304A] focus:outline-none focus:bg-[#23304A] transition duration-150 ease-in-out">
                                         {{ __('Log Out') }}
-                                    </x-dropdown-link>
+                                    </button>
                                 </form>
                             </x-slot>
                         </x-dropdown>
@@ -222,11 +220,9 @@
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
 
-                        <x-responsive-nav-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                            this.closest('form').submit();">
+                        <button type="submit" class="block w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-slate-400 hover:text-slate-200 hover:bg-[#162032] hover:border-cyan-400/50 focus:outline-none focus:text-slate-200 focus:bg-[#162032] focus:border-cyan-400/50 transition duration-150 ease-in-out">
                             {{ __('Log Out') }}
-                        </x-responsive-nav-link>
+                        </button>
                     </form>
                 </div>
             </div>
@@ -245,4 +241,26 @@
             </div>
         @endguest
     </div>
+
+    @auth
+        @if(!auth()->user()->hasVerifiedEmail())
+            <div class="border-t border-[#23304A] bg-[#0B1120]/70">
+                <div class="marquee" aria-label="Email verification reminder">
+                    <div class="marquee__inner">
+                        @for ($i = 0; $i < 2; $i++)
+                            <div class="marquee__group text-sm font-mono text-slate-200 py-2">
+                                <span class="inline-flex items-center gap-2">
+                                    <span class="h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_0_3px_rgba(251,191,36,0.15)]"></span>
+                                    Tolong verifikasi email anda melalui inbox yang sudah kami kirim.
+                                </span>
+                                <span class="text-slate-400">Jika belum ada,</span>
+                                <a href="{{ route('verification.notice') }}" class="text-cyan-300 hover:text-cyan-200 underline underline-offset-2">verif disini</a>
+                                <span class="text-slate-400">(kami bisa kirim ulang)</span>
+                            </div>
+                        @endfor
+                    </div>
+                </div>
+            </div>
+        @endif
+    @endauth
 </nav>

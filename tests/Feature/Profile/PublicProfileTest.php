@@ -14,6 +14,11 @@ test('public profile shows user published posts', function () {
     $user = User::factory()->create();
     $category = Category::first();
 
+    // Profile page requires authentication (verification not required)
+    $viewer = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
     $publishedPost = Post::factory()->create([
         'user_id' => $user->id,
         'category_id' => $category->id,
@@ -26,7 +31,8 @@ test('public profile shows user published posts', function () {
         'published_at' => null,
     ]);
 
-    $response = $this->get(route('profile.show', ['user' => $user]));
+    $response = $this->actingAs($viewer)
+        ->get(route('profile.show', ['user' => $user]));
 
     $response->assertOk();
     $response->assertSee($publishedPost->title);

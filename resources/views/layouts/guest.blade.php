@@ -11,7 +11,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased bg-[#0B1120] text-slate-200">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
+    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 px-4">
             <div class="text-center">
                 <a href="/" class="block">
                     <span class="text-3xl font-mono font-bold text-violet-500 tracking-wider">ORBIT</span>
