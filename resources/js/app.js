@@ -70,6 +70,8 @@ Alpine.start();
 	// Subtle parallax on nav background
 	const nav = document.querySelector('[data-parallax-nav]');
 	if (!nav) return;
+	const navBg = nav.querySelector('[data-parallax-nav-bg]');
+	if (!navBg) return;
 
 	let ticking = false;
 	const onScroll = () => {
@@ -77,7 +79,9 @@ Alpine.start();
 		ticking = true;
 		window.requestAnimationFrame(() => {
 			const y = Math.max(0, Math.min(window.scrollY, 200));
-			nav.style.transform = `translate3d(0, ${y * 0.05}px, 0)`;
+			// IMPORTANT: don't translate the sticky nav itself, it creates a visual gap at the top.
+			// Move only a background overlay for the subtle effect.
+			navBg.style.transform = `translate3d(0, ${y * 0.05}px, 0)`;
 			ticking = false;
 		});
 	};

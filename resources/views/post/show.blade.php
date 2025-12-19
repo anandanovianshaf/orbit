@@ -75,9 +75,16 @@
                 </div>
 
                 <div class="mt-8">
-                    <span class="px-4 py-2 bg-violet-600/20 border border-violet-500/50 text-violet-400 rounded-2xl font-mono text-sm">
+                    <a
+                        href="{{ route('post.byCategory', $post->category->id) }}"
+                        class="inline-flex items-center px-4 py-2 bg-violet-600/20 border border-violet-500/50 text-violet-400 rounded-2xl font-mono text-sm
+                               transition duration-200 ease-orbit
+                               hover:bg-red-600/20 hover:border-red-500/60 hover:text-red-300 hover:scale-[1.03]
+                               focus:outline-none focus:ring-2 focus:ring-violet-400/40 focus:ring-offset-0"
+                        title="View category: {{ $post->category->name }}"
+                    >
                         {{ $post->category->name }}
-                    </span>
+                    </a>
                 </div>
 
                 <!-- Ack + Views (bottom) -->

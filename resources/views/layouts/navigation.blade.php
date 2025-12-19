@@ -1,4 +1,6 @@
-<nav x-data="{ open: false }" data-parallax-nav class="sticky top-0 z-50 backdrop-blur-md bg-[#0B1120]/80 border-b border-[#23304A] will-change-transform">
+<nav x-data="{ open: false }" data-parallax-nav class="sticky top-0 z-50 backdrop-blur-md bg-[#0B1120]/80 border-b border-[#23304A]">
+    <!-- Parallax background overlay (avoid translating the sticky nav itself) -->
+    <div data-parallax-nav-bg class="pointer-events-none absolute inset-0 opacity-70 will-change-transform"></div>
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col gap-3 py-3 sm:py-0 sm:flex-row sm:items-center sm:justify-between sm:h-16">

@@ -51,6 +51,17 @@
                 const root = document.querySelector('[data-page-root]');
                 if (!root) return;
 
+                const loader = document.getElementById('page-loader');
+
+                // When navigating back/forward, browsers may restore the page from BFCache.
+                // In that case, our previous "fade out + loader" state can be restored too.
+                // Force-reset UI so it never stays stuck on skeleton.
+                const resetUi = () => {
+                    if (loader) loader.style.opacity = '0';
+                    root.style.opacity = '1';
+                    root.style.transition = '';
+                };
+
                 const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
                 const durationIn = prefersReduced ? 1 : 60;
                 const durationOut = prefersReduced ? 1 : 40;
@@ -59,6 +70,13 @@
                 requestAnimationFrame(() => {
                     root.style.transition = `opacity ${durationIn}ms cubic-bezier(0.2,0.8,0.2,1)`;
                     root.style.opacity = '1';
+                    if (loader) loader.style.opacity = '0';
+                });
+
+                // BFCache / Back-Forward navigation safety
+                window.addEventListener('pageshow', resetUi);
+                document.addEventListener('visibilitychange', () => {
+                    if (document.visibilityState === 'visible') resetUi();
                 });
 
                 // Fade out on internal links
@@ -87,7 +105,6 @@
                     if (url.pathname === window.location.pathname && url.search === window.location.search) return;
 
                     e.preventDefault();
-                    const loader = document.getElementById('page-loader');
                     if (loader) loader.style.opacity = '1';
                     root.style.transition = `opacity ${durationOut}ms cubic-bezier(0.2,0.8,0.2,1)`;
                     root.style.opacity = '0';
